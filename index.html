@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login and Welcome</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        text-align: center;
+    }
+    .container {
+        max-width: 400px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    h2 {
+        text-align: center;
+    }
+    input[type="text"],
+    input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        margin: 8px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+    input[type="submit"] {
+        width: 100%;
+        background-color: #4caf50;
+        color: white;
+        padding: 14px 20px;
+        margin: 8px 0;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    input[type="submit"]:hover {
+        background-color: #45a049;
+    }
+    .welcome-message {
+        font-size: 36px;
+        margin-top: 100px;
+    }
+    .history-section {
+        margin-top: 50px;
+    }
+</style>
+</head>
+<body>
+<div class="container" id="loginContainer">
+    <h2>Login</h2>
+    <form id="loginForm">
+        <label for="loginEmail">Email:</label>
+        <input type="text" id="loginEmail" name="loginEmail" required><br>
+        <label for="loginPassword">Password:</label>
+        <input type="password" id="loginPassword" name="loginPassword" required><br>
+        <input type="submit" value="Login">
+    </form>
+    <hr>
+    <h2>Sign Up</h2>
+    <form id="signupForm">
+        <label for="signupEmail">Email:</label>
+        <input type="text" id="signupEmail" name="signupEmail" required><br>
+        <label for="signupPassword">Password:</label>
+        <input type="password" id="signupPassword" name="signupPassword" required><br>
+        <label for="doctorPhone">Doctor's Phone:</label>
+        <input type="text" id="doctorPhone" name="doctorPhone" required><br>
+        <label for="responsiblePhone">Responsible Person's Phone:</label>
+        <input type="text" id="responsiblePhone" name="responsiblePhone" required><br>
+        <input type="submit" value="Sign Up">
+    </form>
+</div>
+
+<div class="container" id="welcomeContainer" style="display:none;">
+    <div class="welcome-message">
+        <h1>Welcome!</h1>
+    </div>
+    <div class="history-section">
+        <h2>History</h2>
+        <p>This section will be filled with historical data.</p>
+    </div>
+</div>
+
+<script>
+    // Function to handle form submission for signup
+    document.getElementById("signupForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+        var signupEmail = document.getElementById("signupEmail").value;
+        var signupPassword = document.getElementById("signupPassword").value;
+        var doctorPhone = document.getElementById("doctorPhone").value;
+        var responsiblePhone = document.getElementById("responsiblePhone").value;
+        
+        // Save user data to local storage
+        localStorage.setItem(signupEmail, JSON.stringify({
+            email: signupEmail,
+            password: signupPassword,
+            doctorPhone: doctorPhone,
+            responsiblePhone: responsiblePhone
+        }));
+        
+        // Clear the form
+        this.reset();
+
+        // Show welcome container and hide login container
+        document.getElementById("loginContainer").style.display = "none";
+        document.getElementById("welcomeContainer").style.display = "block";
+    });
+
+    // Function to handle form submission for login
+    document.getElementById("loginForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+        var loginEmail = document.getElementById("loginEmail").value;
+        var loginPassword = document.getElementById("loginPassword").value;
+        
+        // Retrieve user data from local storage
+        var userData = JSON.parse(localStorage.getItem(loginEmail));
+        
+        if (userData && userData.password === loginPassword) {
+            // Show welcome container and hide login container
+            document.getElementById("loginContainer").style.display = "none";
+            document.getElementById("welcomeContainer").style.display = "block";
+        } else {
+            alert("Invalid email or password. Please try again.");
+        }
+    });
+</script>
+</body>
+</html>
